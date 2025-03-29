@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
@@ -71,16 +72,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void sortByGroup(View view) {
         ArrayList<Contact> contacts = ContactStorage.getInstance().getContacts();
-        Collections.sort(contacts, new Comparator<Contact>() {
-            @Override
-            public int compare(Contact c1, Contact c2) {
-                return c1.getContactGroup().compareToIgnoreCase(c2.getContactGroup());
+
+        ArrayList<Contact> workContacts = new ArrayList<>();
+        ArrayList<Contact> personalContacts = new ArrayList<>();
+
+        Iterator<Contact> iterator = contacts.iterator();
+        while (iterator.hasNext()) {
+            Contact contact = iterator.next();
+            if (contact.getContactGroup().equalsIgnoreCase("Työ")) {
+                workContacts.add(contact);
+            } else if (contact.getContactGroup().equalsIgnoreCase("Henkilökohtainen")) {
+                personalContacts.add(contact);
             }
-        });
+        }
+        contacts.clear();
+        contacts.addAll(personalContacts);
+        contacts.addAll(workContacts);
+
         adapter.notifyDataSetChanged();
     }
-
-
 
 }
 
