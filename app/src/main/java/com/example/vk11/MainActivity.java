@@ -86,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         contacts.clear();
-        contacts.addAll(personalContacts);
         contacts.addAll(workContacts);
+        contacts.addAll(personalContacts);
+
 
         adapter.notifyDataSetChanged();
     }
